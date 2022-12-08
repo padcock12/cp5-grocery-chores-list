@@ -4,108 +4,92 @@ import './App.css';
 
 function App() {
   // setup state
-  const [products, setProducts] = useState([]);
+  const [choresParker, setChoresParker] = useState([]);
   const [error, setError] = useState("");
-  const [itemName, setItemName] = useState("");
-  const [userEnter, setUserEnter] = useState("");
-  const [quantity,setQuantity] = useState("");
+  const [choreName, setChoreName] = useState("");
+  const [howLong,setHowLong] = useState("");
+  const [personName, setPersonName] = useState("");
 
-  const fetchProducts = async() => {
+
+  const fetchChores = async() => {
     try {      
-      const response = await axios.get("/api/products");
-      setProducts(response.data);
+      const response = await axios.get("/api/choresParker");
+      setChoresParker(response.data);
     } catch(error) {
       setError("error retrieving products: " + error);
     }
   }
   
+
  
   
-  const createProduct = async() => {
+  const createChore = async() => {
     try {
-      await axios.post("/api/products", {itemName:itemName,userEnter:userEnter,quantity:quantity});
+      await axios.post("/api/chores", {choreName:choreName,howLong:howLong,personName:personName});
     } catch(error) {
       setError("error adding a product: " + error);
     }
   }
-
-  const increaseQuantity = async(item)=> {
-    try {
-      const response = await axios.put("/api/cart/increase/"+item.itemName+"/"+item.quantity, {id:itemName, quantity:quantity});
-      setProducts(response.data);
-    } catch(error) {
-      setError("error while increasing quantity"+error);
-    }
-  }
   
-  const decreaseQuantity = async(item)=> {
-    try {
-      const response = await axios.put("/api/cart/decrease/"+item.itemName+"/"+item.quantity, {id:itemName, quantity:quantity});
-      setProducts(response.data);
-    } catch(error) {
-      setError("error while decreasing quantity"+error);
-    }
-  }
   
-  const removeFromProducts = async(item)=> {
+  const removeFromChores = async(item)=> {
     try {
-      const response = await axios.delete("/api/products/"+item.itemName, {itemName:itemName});
-      setProducts(response.data);
+      const response = await axios.delete("/api/chores/"+item.choreName, {choreName:choreName});
+      setChoresParker(response.data);
     } catch(error) {
       setError("error while deleting cart item"+ error);
     }
   }
+  
 
   // fetch ticket data
   useEffect(() => {
-    fetchProducts();
+    //fetchChoresParker();
+    fetchChores();
   },[]);
 
-  const addProduct = async(e) => {
+  const addChore = async(e) => {
     e.preventDefault();
-    await createProduct();
-    fetchProducts();
-    setItemName("");
-    setUserEnter("");
-    setQuantity("");
+    await createChore();
+    fetchChores();
+    setChoreName("");
+    setHowLong("");
+    setPersonName("");
   }
-
 
   // render results
   return (
     <div className="App">
     
       {error}
-      <form onSubmit={addProduct}>
+      <form onSubmit={addChore}>
         <div class="firstQ">
-          <h2 class="firstQ">
-            Who needs this?
-            <input type="text" value={userEnter} onChange={e => setUserEnter(e.target.value)} />
+          <h2>
+            What is the Chore?
+            <input type="text" value={choreName} onChange={e => setChoreName(e.target.value)} />
           </h2>
         </div>
         <div class="secondQ">
-          <h2 class="firstQ">
-            What do you need?
-            <textarea value={itemName} onChange={e=>setItemName(e.target.value)}></textarea>
+          <h2>
+            How Frequently Does it Need to be Done?
+            <textarea value={howLong} onChange={e=>setHowLong(e.target.value)}></textarea>
           </h2>
         </div>
         <div class="thirdQ">
-          <h2 class="secondLabel">
-            How many do you need?
-            <textarea value={quantity} onChange={e=>setQuantity(e.target.value)}></textarea>
+          <h2>
+            Who's Job is it?
+            <textarea value={personName} onChange={e=>setPersonName(e.target.value)}></textarea>
           </h2>
         </div>
         <input type="submit" value="Submit" />
       </form>
-      <h1>Products</h1>
-      {products.map( item => (
-        <div key={item.id}>
-            <p>{item.itemName}, {item.quantity}</p>
-            <button onClick={e=> increaseQuantity(item)}>+</button>
-            <button onClick={e=> decreaseQuantity(item)}>-</button>
-            <button onClick={e=> removeFromProducts(item)}>Remove From Cart</button>
+      <h1>Chore List</h1>
+      {choresParker.map( choreParker => (
+        <div key={choreParker.id} className="choreParker">
+            <p>{choreParker.personName} needs to do {choreParker.choreName} {choreParker.howLong}</p>
+            <button onClick={e => removeFromChores(choreParker)}>Remove Chore</button>
         </div>
-      ))}     
+      ))}
     </div>
   );
 }

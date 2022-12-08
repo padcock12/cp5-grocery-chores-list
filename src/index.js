@@ -9,9 +9,9 @@ root.render(
   <div class='total-container'>
   <div class='menu-container'>
       <div class='menu'>
-        <div class='date'>Grocery List</div>
+        <div class='date'>Chores List</div>
         <div class='links'>
-        <div class='signup'><a href="https://parkeradcock.com/cp5-groceries/chores-list/build/">Chores List</a></div>
+        <div class='signup'><a href="https://parkeradcock.com/cp5-groceries/front-end/build/">Grocery List</a></div>
         </div>
       </div>
     </div>
@@ -22,7 +22,6 @@ root.render(
     <a href="https://github.com/padcock12/cp4-wedding-list.git" class="gitHubText">Click here to go to my GitHub Repository</a>
   </div>
   </div>
-
 );
 
 // If you want to start measuring performance in your app, pass a function
